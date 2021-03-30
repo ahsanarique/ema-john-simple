@@ -7,7 +7,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:5000/products/${productKey}`)
+    fetch(`https://tranquil-wave-75137.herokuapp.com/products/${productKey}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);

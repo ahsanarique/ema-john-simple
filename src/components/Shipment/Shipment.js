@@ -14,7 +14,7 @@ const Shipment = () => {
       orderTime: new Date(),
     };
 
-    fetch("http://localhost:5000/addOrder", {
+    fetch("https://tranquil-wave-75137.herokuapp.com/addOrder", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
