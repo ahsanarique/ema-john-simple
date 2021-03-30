@@ -4,7 +4,7 @@ const Cart = (props) => {
   const cart = props.cart;
 
   const total = cart.reduce(
-    (total, product) => total + product.price * product.quantity,
+    (total, product) => total + product.price * product.quantity || 1,
     0
   );
 

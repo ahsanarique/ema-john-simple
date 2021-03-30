@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fakeData from "../../fakeData";
 import {
   getDatabaseCart,
   processOrder,
@@ -9,15 +8,15 @@ import Cart from "../Cart/Cart";
 import CartItems from "../CartItems/CartItems";
 import happyImage from "../../images/giphy.gif";
 import "./Review.css";
+import { useHistory } from "react-router";
 
 const Review = () => {
   const [cart, setCart] = useState([]);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const history = useHistory();
 
-  const handlePlaceOrder = () => {
-    setCart([]);
-    setOrderPlaced(true);
-    processOrder();
+  const handleProceedCheckout = () => {
+    history.push("./shipment");
   };
 
   const handleRemoveProduct = (productKey) => {
@@ -30,13 +29,17 @@ const Review = () => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
 
-    const cartProducts = productKeys.map((key) => {
-      const product = fakeData.find((pd) => pd.key === key);
-      product.quantity = savedCart[key];
-      return product;
-    });
-
-    setCart(cartProducts);
+    fetch("http://localhost:5000/productsByKeys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productKeys),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCart(data);
+      });
   }, []);
 
   let thankYou;
@@ -58,8 +61,11 @@ const Review = () => {
       </div>
       <div className="cart-container">
         <Cart cart={cart}>
-          <button onClick={() => handlePlaceOrder()} className="main-button">
-            Place Order
+          <button
+            onClick={() => handleProceedCheckout()}
+            className="main-button"
+          >
+            Proceed Checkout
           </button>
         </Cart>
       </div>
